@@ -24,9 +24,9 @@ def get_rating(user, game):
     """ Returns the rating of `user` from a game dict. If user is not in the
         game, returns None.
     """
-    if game["white"]["username"].lower() == user:
+    if game["white"]["username"].lower() == user.lower():
         return game["white"]["rating"]
-    elif game["black"]["username"].lower() == user:
+    elif game["black"]["username"].lower() == user.lower():
         return game["black"]["rating"]
     else:
         return None
@@ -48,14 +48,10 @@ def avg_delta_rating(user, start=None, end=None, tz=datetime.timezone.utc,
         - excludes: (datetime.datetime[]) List of months to excludes
     """
 
-    last_rating = { "blitz": -1,
-                     "bullet" : -1,
-                     "rapid" : -1 }
+    last_rating = { t_class: -1 for t_class in time_classes }
 
                            #  (net_rat_gain[24], n_games[24])
-    rating_stats = { "blitz": ([0]*24, [0]*24),
-                     "bullet": ([0]*24, [0]*24),
-                     "rapid": ([0]*24, [0]*24) }
+    rating_stats = { t_class: ([0]*24, [0]*24) for t_class in time_classes }
 
     for month_games in fetch_games.get_all_games(user, start, end, excludes):
         for game in month_games:
@@ -76,9 +72,7 @@ def avg_delta_rating(user, start=None, end=None, tz=datetime.timezone.utc,
 
             last_rating[time_class] = usr_rating
 
-    avg = { "blitz": [0]*24,
-            "bullet": [0]*24,
-            "rapid": [0]*24 }
+    avg = { t_class: [0]*24 for t_class in time_classes }
 
     for i in range(24):
         for t_class in time_classes:
@@ -112,9 +106,7 @@ if __name__ == "__main__":
     avg_in_IST = avg_delta_rating(user, None, switch_dt, IST, excludes)
     avg_in_MST = avg_delta_rating(user, switch_dt, None, MST, excludes)
 
-    avg = { "blitz": [0]*24,
-            "bullet": [0]*24,
-            "rapid": [0]*24 }
+    avg = { t_class: [0]*24 for t_class in time_classes }
     for i in range(24):
         for t_class in time_classes:
             avg[t_class][i] = ((avg_in_IST[t_class][i] + 
