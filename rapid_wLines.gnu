@@ -1,5 +1,5 @@
 # Gnuplot script for plotting rapid performance data vs hour of the
-# day.
+# day with lines.
 # Run using: gnuplot> load rapid_wLines.gnu
 
 # Customize the axes 

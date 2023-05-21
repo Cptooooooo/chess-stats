@@ -1,5 +1,5 @@
 # Gnuplot script for plotting blitz and bullet performance data vs hour of the
-# day.
+# day using lines.
 # Run using: gnuplot> load blitz_bullet_wLines.gnu
 
 # Customize the axes 
